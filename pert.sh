@@ -95,7 +95,7 @@ if [[ $total_estimate > 0 ]]; then
     tpeformat=" | %-13s |%11s |%10s |\n"
     
     _divider
-    printf "$tpeformat" "Confidence:"
+    printf "$tpeformat" "confidence"
     _divider
     printf "$tpeformat" "1 Sigma - 68%" $(_calc "$total_estimate - $total_variance") $(_calc "$total_estimate + $total_variance")
     printf "$tpeformat" "1 Sigma - 95%" $(_calc "$total_estimate - 2 * $total_variance") $(_calc "$total_estimate + 2 * $total_variance")
