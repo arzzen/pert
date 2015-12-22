@@ -22,14 +22,13 @@ function _calc
 function _divider
 {
     divider=------------------------------
-    divider=" "$divider$divider$divider
-    width=85
+    divider=" +"$divider$divider$divider"+"
+    width=88
     
-    printf "%$width.${width}s\n" "$divider"
+    printf "%$width.${width}s+\n" "$divider"
 }
 
-header="\n %-12s |%11s |%10s |%12s |%9s |%9s |%9s\n"
-format=" %-12s |%11s |%10s |%12s |%9s |%9s |%9s\n"
+format=" | %-12s |%11s |%10s |%12s |%9s |%9s |%9s |\n"
 
 counter=0
 total_estimate=0
@@ -54,7 +53,9 @@ for var in "$@"; do
     
     # header
     if [[ $counter = 1 ]]; then
-        printf "$header" "#" "optimistic" "realistic" "pessimistic" "duration" "risk" "variance"
+        echo -e "\nTasks\n"
+        _divider
+        printf "$format" "#" "optimistic" "realistic" "pessimistic" "duration" "risk" "variance"
         _divider
     fi
     
@@ -86,8 +87,13 @@ if [[ $total_estimate > 0 ]]; then
     # footer        
     _divider
     printf "$format" "summary" "-" "-" "-" $total_estimate $total_standard_deviation $total_variance
+    _divider
     
-    #echo -e "\nThree point estimate:"
+    echo -e "\nThree point estimates\n"
+    
+    echo -e " 1 Sigma - 68% confidence:" $(_calc "$total_estimate - $total_variance") "-" $(_calc "$total_estimate + $total_variance")
+    echo -e " 2 Sigma - 95% confidence:" $(_calc "$total_estimate - 2 * $total_variance") "-" $(_calc "$total_estimate + 2 * $total_variance")
+    echo -e " 2 Sigma - 99.7% confidence:" $(_calc "$total_estimate - 3 * $total_variance") "-" $(_calc "$total_estimate + 2 * $total_variance")
     
 fi
 
