@@ -23,13 +23,13 @@ function _divider
 {
     divider=------------------------------
     divider=" "$divider$divider$divider
-    width=83
+    width=85
     
     printf "%$width.${width}s\n" "$divider"
 }
 
-header="\n %-12s |%11s |%10s |%12s |%9s |%7s |%9s\n"
-format=" %-12s |%11s |%10s |%12s |%9s |%7s |%9s\n"
+header="\n %-12s |%11s |%10s |%12s |%9s |%9s |%9s\n"
+format=" %-12s |%11s |%10s |%12s |%9s |%9s |%9s\n"
 
 counter=0
 total_estimate=0
@@ -87,7 +87,7 @@ if [[ $total_estimate > 0 ]]; then
     _divider
     printf "$format" "summary" "-" "-" "-" $total_estimate $total_standard_deviation $total_variance
     
-    echo -e "\nThree point estimate:"
+    #echo -e "\nThree point estimate:"
     
 fi
 
