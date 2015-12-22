@@ -19,11 +19,11 @@ function _calc
     echo "scale=$scale; $@" | bc -l | sed 's/^\./0./'
 }
 
+width=88
 function _divider
 {
     divider=------------------------------
     divider=" +"$divider$divider$divider"+"
-    width=88
     
     printf "%$width.${width}s+\n" "$divider"
 }
@@ -91,10 +91,17 @@ if [[ $total_estimate > 0 ]]; then
     
     echo -e "\nThree point estimates\n"
     
-    echo -e " 1 Sigma - 68% confidence:" $(_calc "$total_estimate - $total_variance") "-" $(_calc "$total_estimate + $total_variance")
-    echo -e " 2 Sigma - 95% confidence:" $(_calc "$total_estimate - 2 * $total_variance") "-" $(_calc "$total_estimate + 2 * $total_variance")
-    echo -e " 2 Sigma - 99.7% confidence:" $(_calc "$total_estimate - 3 * $total_variance") "-" $(_calc "$total_estimate + 2 * $total_variance")
+    width=42 
+    tpeformat=" | %-13s |%11s |%10s |\n"
     
+    _divider
+    printf "$tpeformat" "Confidence:"
+    _divider
+    printf "$tpeformat" "1 Sigma - 68%" $(_calc "$total_estimate - $total_variance") $(_calc "$total_estimate + $total_variance")
+    printf "$tpeformat" "1 Sigma - 95%" $(_calc "$total_estimate - 2 * $total_variance") $(_calc "$total_estimate + 2 * $total_variance")
+    printf "$tpeformat" "1 Sigma - 99%" $(_calc "$total_estimate - 3 * $total_variance") $(_calc "$total_estimate + 3 * $total_variance")
+    _divider
+
 fi
 
 echo -e "\n"
