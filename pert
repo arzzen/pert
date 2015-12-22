@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# help text
+if [ -z "$1" ] || [[ "$1" =~ [-]*(help|h) ]]; then
+    echo -e "\nA command line PERT calculator for quick estimates."
+    echo -e "Comma separated task list in the form \"1,2,12 4,5,9 2,3,6\", where whitespace separates tasks.\n"
+    echo -e "Usage:\n\tpert [optimistic,realistic,pessimistic]\n"
+    exit 1
+fi
+
+header="\n %-12s |%11s |%10s |%12s |%9s |%7s |%9s\n"
+format=" %-12s |%11s |%10s |%12s |%9s |%7s |%9s\n"
+
+divider=------------------------------
+divider=" "$divider$divider$divider
+width=83
+
+scale=2
+counter=0
+total_estimate=0
+total_standard_deviation=0
+total_variance=0
+for var in "$@"; do
+    
+    # counter iterator
+    counter=$[$counter +1]
+ 
+    # split values
+    IFS=',' read -ra ADDR <<< "$var"
+    
+    # optimistic value
+    o=${ADDR[0]}
+    
+    # realistic value
+    r=${ADDR[1]}
+    
+    # pessimistic value
+    p=${ADDR[2]}
+    
+    # header
+    if [[ $counter = 1 ]]; then
+        printf "$header" "task" "optimistic" "realistic" "pessimistic" "duration" "risk" "variance"
+        printf "%$width.${width}s\n" "$divider"
+    fi
+    
+    # check values
+    if [ -z "$o" ] || [ -z "$r" ] || [ -z "$p" ]; then
+        #echo -e "\tbad input [$o,$r,$p]"
+        printf "$format" "$counter. bad input" $o $r $p
+    else
+    
+        # pert estimate
+        pert_estimate=$(echo "scale=$scale; ($o+4*$r+$p)/6" | bc -l | sed 's/^\./0./')
+        total_estimate=$(echo "scale=$scale; $total_estimate + $pert_estimate" | bc -l | sed 's/^\./0./') 
+        
+        # standard deviation
+        standard_deviation=$(echo "scale=$scale; ($p-$o)/6" | bc -l | sed 's/^\./0./')
+        total_standard_deviation=$(echo "scale=$scale; $total_standard_deviation + $standard_deviation" | bc | sed 's/^\./0./')
+
+        # variance
+        variance=$(echo "scale=$scale; $standard_deviation*$standard_deviation" | bc -l | sed 's/^\./0./')
+        total_variance=$(echo "scale=$scale; $total_variance + $variance" | bc | sed 's/^\./0./')
+    
+        # row        
+        printf "$format" "$counter. task" $o $r $p $pert_estimate $standard_deviation $variance
+    fi
+
+done
+
+if [[ $total_estimate > 0 ]]; then
+
+    # footer        
+    printf "%$width.${width}s\n" "$divider"
+    printf "$format" "summary" "-" "-" "-" $total_estimate $total_standard_deviation $total_variance
+    
+    echo -e "\nThree point estimate:"
+    
+fi
+
+echo -e "\n"
