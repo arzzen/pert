@@ -12,7 +12,6 @@ if [ -z "$1" ] || [[ "$1" =~ [-]*(help|h) ]]; then
     exit 1
 fi
 
-# helper
 function _calc 
 {
     scale=2
@@ -29,6 +28,12 @@ function _divider
 }
 
 format=" | %-12s |%11s |%10s |%12s |%9s |%9s |%9s |\n"
+
+# header
+echo -e "\nTasks\n"
+_divider
+printf "$format" "#" "optimistic" "realistic" "pessimistic" "duration" "risk" "variance"
+_divider
 
 counter=0
 total_estimate=0
@@ -50,14 +55,6 @@ for var in "$@"; do
     
     # pessimistic value
     p=${ADDR[2]}
-    
-    # header
-    if [[ $counter = 1 ]]; then
-        echo -e "\nTasks\n"
-        _divider
-        printf "$format" "#" "optimistic" "realistic" "pessimistic" "duration" "risk" "variance"
-        _divider
-    fi
     
     # check values
     if [ -z "$o" ] || [ -z "$r" ] || [ -z "$p" ]; then
@@ -82,10 +79,11 @@ for var in "$@"; do
 
 done
 
-if [[ $total_estimate > 0 ]]; then
+_divider
 
+if [[ $total_estimate > 0 ]]; then
+    
     # footer        
-    _divider
     printf "$format" "summary" "-" "-" "-" $total_estimate $total_standard_deviation $total_variance
     _divider
     
