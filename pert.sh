@@ -4,11 +4,11 @@
 if [ -z "$1" ] || [[ "$1" =~ [-]*(help|h) ]]; then
     echo -e "\nA command line PERT calculator for quick estimates."
     echo -e "\nComma separated task list in the form \"1,2,12 4,5,9 2,3,6\", where whitespace separates tasks."
-    echo -e "\nUsage:\n\tpert [optimistic,realistic,pessimistic]\n"
+    echo -e "\nUsage:\n\tpert.sh [optimistic,realistic,pessimistic]\n"
     echo -e "Example:"
-    echo -e "\tpert 1,3,4"
-    echo -e "\tpert 10,15,20 5,7,10"
-    echo -e "\tpert \"1,2,3\" \"15,17,20\"\n"
+    echo -e "\tpert.sh 1,3,4"
+    echo -e "\tpert.sh 10,15,20 5,7,10"
+    echo -e "\tpert.sh \"1,2,3\" \"15,17,20\"\n"
     exit 1
 fi
 

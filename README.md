@@ -9,12 +9,12 @@ A command line PERT calculator for quick estimates.
 Comma separated task list in the form "1,2,12 4,5,9 2,3,6", where whitespace separates tasks.
 
 Usage:
-	pert [optimistic,realistic,pessimistic]
+	pert.sh [optimistic,realistic,pessimistic]
 
 Example:
-	pert 1,3,4
-	pert 10,15,20 5,7,10
-	pert "1,2,3" "15,17,20"
+	pert.sh 1,3,4
+	pert.sh 10,15,20 5,7,10
+	pert.sh "1,2,3" "15,17,20"
 </pre>
 
 ### Example
