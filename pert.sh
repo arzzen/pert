@@ -95,9 +95,9 @@ if [[ $total_estimate > 0 ]]; then
     _divider
     printf "$tpeformat" "confidence"
     _divider
-    printf "$tpeformat" "1 Sigma - 68%" $(_calc "$total_estimate - $total_variance") $(_calc "$total_estimate + $total_variance")
-    printf "$tpeformat" "2 Sigma - 95%" $(_calc "$total_estimate - 2 * $total_variance") $(_calc "$total_estimate + 2 * $total_variance")
-    printf "$tpeformat" "3 Sigma - 99%" $(_calc "$total_estimate - 3 * $total_variance") $(_calc "$total_estimate + 3 * $total_variance")
+    printf "$tpeformat" "1 Sigma - 68%" $(_calc "$total_estimate - $total_standard_deviation") $(_calc "$total_estimate + $total_standard_deviation")
+    printf "$tpeformat" "2 Sigma - 95%" $(_calc "$total_estimate - 2 * $total_standard_deviation") $(_calc "$total_estimate + 2 * $total_standard_deviation")
+    printf "$tpeformat" "3 Sigma - 99%" $(_calc "$total_estimate - 3 * $total_standard_deviation") $(_calc "$total_estimate + 3 * $total_standard_deviation")
     _divider
 
 fi
