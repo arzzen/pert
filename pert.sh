@@ -2,10 +2,10 @@
 
 # help text
 if [ -z "$1" ] || [[ "$1" =~ [-]*(help|h) ]]; then
-    echo -e "\nA command line PERT calculator for quick estimates."
+    echo -e "\n\033[1mA command line PERT calculator for quick estimates.\033[0m"
     echo -e "\nComma separated task list in the form \"1,2,12 4,5,9 2,3,6\", where whitespace separates tasks."
-    echo -e "\nUsage:\n\tpert.sh [optimistic,realistic,pessimistic]\n"
-    echo -e "Example:"
+    echo -e "\n\033[1mUsage:\033[0m\n\tpert.sh [optimistic,realistic,pessimistic]\n"
+    echo -e "\033[1mExample:\033[0m"
     echo -e "\tpert.sh 1,3,4"
     echo -e "\tpert.sh 10,15,20 5,7,10"
     echo -e "\tpert.sh \"1,2,3\" \"15,17,20\"\n"
@@ -30,7 +30,7 @@ function _divider
 format=" | %-12s |%11s |%10s |%12s |%9s |%9s |%9s |\n"
 
 # header
-echo -e "\nTasks\n"
+echo -e "\n\033[1mTasks\033[0m\n"
 _divider
 printf "$format" "#" "optimistic" "realistic" "pessimistic" "duration" "risk" "variance"
 _divider
@@ -87,7 +87,7 @@ if [[ $total_estimate > 0 ]]; then
     printf "$format" "summary" "-" "-" "-" $total_estimate $total_standard_deviation $total_variance
     _divider
     
-    echo -e "\nThree point estimates\n"
+    echo -e "\n\033[1mThree point estimates\033[0m\n"
     
     width=42 
     tpeformat=" | %-13s |%11s |%10s |\n"
