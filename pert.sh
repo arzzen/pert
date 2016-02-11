@@ -1,21 +1,38 @@
 #!/bin/bash
+set -o nounset
+set -o errexit
 
-# help text
-if [ -z "$1" ] || [[ "$1" =~ [-]*(help|h) ]]; then
-    echo -e "\n\033[1mA command line PERT calculator for quick estimates.\033[0m"
-    echo -e "\nComma separated task list in the form \"1,2,12 4,5,9 2,3,6\", where whitespace separates tasks."
-    echo -e "\n\033[1mUsage:\033[0m\n\tpert.sh [optimistic,realistic,pessimistic]\n"
-    echo -e "\033[1mExample:\033[0m"
-    echo -e "\tpert.sh 1,3,4"
-    echo -e "\tpert.sh 10,15,20 5,7,10"
-    echo -e "\tpert.sh \"1,2,3\" \"15,17,20\"\n"
+function _echo 
+{
+    echo -e "$1"
+}
+
+function _echoB
+{
+    _echo "\033[1m$1\033[0m"
+}
+
+function _help
+{
+    _echo ""
+    _echoB "A command line PERT calculator for quick estimates."
+    _echo "Comma separated task list in the form \"1,2,12 4,5,9 2,3,6\", where whitespace separates tasks."
+    _echo ""
+    _echoB "Usage:"
+    _echo "\tpert.sh [optimistic,realistic,pessimistic]"
+    _echo ""
+    _echoB "Example:"
+    _echo "\tpert.sh 1,3,4"
+    _echo "\tpert.sh 10,15,20 5,7,10"
+    _echo "\tpert.sh \"1,2,3\" \"15,17,20\""
+    _echo ""
     exit 1
-fi
+}
 
+scale=2
 function _calc 
 {
-    scale=2
-    echo "scale=$scale; $@" | bc -l | sed 's/^\./0./'
+    _echo "scale=$scale; $@" | bc -l | sed 's/^\./0./'
 }
 
 width=88
@@ -23,17 +40,27 @@ function _divider
 {
     divider=------------------------------
     divider=" +"$divider$divider$divider"+"
-    
     printf "%$width.${width}s+\n" "$divider"
 }
 
-format=" | %-12s |%11s |%10s |%12s |%9s |%9s |%9s |\n"
+readonly format=" | %-12s |%11s |%10s |%12s |%9s |%9s |%9s |\n"
+function _header
+{
+    _echo ""
+    _echoB "Tasks"
+    _echo ""
+    _divider
+    printf "$format" "#" "optimistic" "realistic" "pessimistic" "duration" "risk" "variance"
+    _divider
+}
 
-# header
-echo -e "\n\033[1mTasks\033[0m\n"
-_divider
-printf "$format" "#" "optimistic" "realistic" "pessimistic" "duration" "risk" "variance"
-_divider
+# help text
+if [ $# -eq 0 ] || [ -z "$1" ] || [[ "$1" =~ [-]*(help|h) ]]; then
+    _help
+fi
+
+# main 
+_header
 
 counter=0
 total_estimate=0
@@ -48,13 +75,22 @@ for var in "$@"; do
     IFS=',' read -ra ADDR <<< "$var"
     
     # optimistic value
-    o=${ADDR[0]}
+    o="0"
+    if [ -n "${ADDR[0]-}" ]; then
+        o=${ADDR[0]}
+    fi
     
     # realistic value
-    r=${ADDR[1]}
+    r="0"
+    if [ -n "${ADDR[1]-}" ]; then
+        r=${ADDR[1]}
+    fi
     
     # pessimistic value
-    p=${ADDR[2]}
+    p="0"
+    if [ -n "${ADDR[2]-}" ]; then
+        p=${ADDR[2]}
+    fi
     
     # check values
     if [ -z "$o" ] || [ -z "$r" ] || [ -z "$p" ]; then
@@ -83,11 +119,13 @@ _divider
 
 if [[ $total_estimate > 0 ]]; then
     
-    # footer        
+    # footer summary       
     printf "$format" "summary" "-" "-" "-" $total_estimate $total_standard_deviation $total_variance
     _divider
     
-    echo -e "\n\033[1mThree point estimates\033[0m\n"
+    _echo ""
+    _echoB "Three point estimates"
+    _echo ""
     
     width=42 
     tpeformat=" | %-13s |%11s |%10s |\n"
@@ -102,4 +140,4 @@ if [[ $total_estimate > 0 ]]; then
 
 fi
 
-echo -e "\n"
+_echo ""
