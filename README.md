@@ -1,6 +1,19 @@
 ### Bash PERT Calculator
 
-A simple utility to estimate tasks using PERT (Program evaluation and review technique)
+> A simple utility to estimate tasks using PERT (Program evaluation and review technique)
+
+### Install
+
+```bash
+$ git clone https://github.com/arzzen/pert.git && cd pert
+$ sudo make install
+```
+
+For uninstalling, open up the cloned directory and run
+
+```bash
+sudo make uninstall
+```
 
 ### Usage
 <pre>
@@ -9,12 +22,12 @@ A command line PERT calculator for quick estimates.
 Comma separated task list in the form "1,2,12 4,5,9 2,3,6", where whitespace separates tasks.
 
 Usage:
-	pert.sh [optimistic,realistic,pessimistic]
+	pert [optimistic,realistic,pessimistic]
 
 Example:
-	pert.sh 1,3,4
-	pert.sh 10,15,20 5,7,10
-	pert.sh "1,2,3" "15,17,20"
+	pert 1,3,4
+	pert 10,15,20 5,7,10
+	pert "1,2,3" "15,17,20"
 </pre>
 
 ### Demo
@@ -25,7 +38,7 @@ Example:
 
 Command:
 
-`$ ./pert.sh 5,7,10 2,3,4 10,12,14`
+`$ ./pert 5,7,10 2,3,4 10,12,14`
 
 Output:
 <pre>
