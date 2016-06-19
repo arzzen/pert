@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pert by arzzen</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pert</h1>
+        <p>A simple command line (bash/shell) utility to estimate tasks using PERT</p>
+
+        <p class="view"><a href="https://github.com/arzzen/pert">View the Project on GitHub <small>arzzen/pert</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/arzzen/pert/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/arzzen/pert/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/arzzen/pert">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
+<a id="bash-pert-calculator" class="anchor" href="#bash-pert-calculator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Bash PERT Calculator</h3>
+
+<blockquote>
+<p>A simple utility to estimate tasks using PERT (Program evaluation and review technique)</p>
+</blockquote>
+
+<h3>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h3>
+
+<div class="highlight highlight-source-shell"><pre>$ git clone https://github.com/arzzen/pert.git <span class="pl-k">&amp;&amp;</span> <span class="pl-c1">cd</span> pert
+$ sudo make install</pre></div>
+
+<p>For uninstalling, open up the cloned directory and run</p>
+
+<div class="highlight highlight-source-shell"><pre>sudo make uninstall</pre></div>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
+
+<pre>
+A command line PERT calculator for quick estimates.
+
+Comma separated task list in the form "1,2,12 4,5,9 2,3,6", where whitespace separates tasks.
+
+Usage:
+    pert [optimistic,realistic,pessimistic]
+
+Example:
+    pert 1,3,4
+    pert 10,15,20 5,7,10
+    pert "1,2,3" "15,17,20"
+</pre>
+
+<h3>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h3>
+
+<p><img src="https://cloud.githubusercontent.com/assets/6382002/13582789/8205bac0-e4ae-11e5-9a03-894e32943f30.gif" alt="pert example"></p>
+
+<h3>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example</h3>
+
+<p>Command:</p>
+
+<p><code>$ ./pert 5,7,10 2,3,4 10,12,14</code></p>
+
+<p>Output:</p>
+
+<pre>
+Tasks
+
+ +--------------------------------------------------------------------------------------+
+ | #            | optimistic | realistic | pessimistic | duration |     risk | variance |
+ +--------------------------------------------------------------------------------------+
+ | 1. task      |          5 |         7 |          10 |     7.16 |     0.83 |     0.68 |
+ | 2. task      |          2 |         3 |           4 |     3.00 |     0.33 |     0.10 |
+ | 3. task      |         10 |        12 |          14 |    12.00 |     0.66 |     0.43 |
+ +--------------------------------------------------------------------------------------+
+ | summary      |          - |         - |           - |    22.16 |     1.82 |     1.21 |
+ +--------------------------------------------------------------------------------------+
+
+Three point estimates
+
+ +----------------------------------------+
+ | confidence    |            |           |
+ +----------------------------------------+
+ | 1 Sigma - 68% |      20.34 |     23.98 |
+ | 2 Sigma - 95% |      18.52 |     25.80 |
+ | 3 Sigma - 99% |      16.70 |     27.62 |
+ +----------------------------------------+
+ </pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/arzzen">arzzen</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
