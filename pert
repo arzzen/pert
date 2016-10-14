@@ -2,7 +2,7 @@
 set -o nounset
 set -o errexit
 
-function _echo 
+function _echo
 {
     echo -e "$1"
 }
@@ -29,7 +29,7 @@ function _help
 }
 
 scale=2
-function _calc 
+function _calc
 {
     _echo "scale=$scale; $@" | bc -l | sed 's/^\./0./'
 }
@@ -56,75 +56,76 @@ function _header
 function pert_table
 {
     _header
-    
+
     counter=0
     total_estimate=0
     total_standard_deviation=0
     total_variance=0
-    for var in "$@"; do
-        
+    # echo $1
+    time=("$@")
+    for var in "${time[@]}"; do
         # counter iterator
         counter=$[$counter +1]
-    
+
         # split values
         IFS=',' read -ra ADDR <<< "$var"
-        
+
         # optimistic value
         o="0"
         if [ -n "${ADDR[0]-}" ]; then
             o=${ADDR[0]}
         fi
-        
+
         # realistic value
         r="0"
         if [ -n "${ADDR[1]-}" ]; then
             r=${ADDR[1]}
         fi
-        
+
         # pessimistic value
         p="0"
         if [ -n "${ADDR[2]-}" ]; then
             p=${ADDR[2]}
         fi
-        
+
         # check values
         if [ -z "$o" ] || [ -z "$r" ] || [ -z "$p" ]; then
             printf "$format" "$counter. bad input" $o $r $p
         else
-        
+
             # pert estimate
             pert_estimate=$(_calc "($o+4*$r+$p)/6")
-            total_estimate=$(_calc "$total_estimate + $pert_estimate") 
-            
+            total_estimate=$(_calc "$total_estimate + $pert_estimate")
+
             # standard deviation
             standard_deviation=$(_calc "($p-$o)/6")
             total_standard_deviation=$(_calc "$total_standard_deviation + $standard_deviation")
-    
+
             # variance
             variance=$(_calc "$standard_deviation * $standard_deviation")
             total_variance=$(_calc "$total_variance + $variance")
-        
-            # row        
+
+            # row
             printf "$format" "$counter. task" $o $r $p $pert_estimate $standard_deviation $variance
         fi
-    
+
     done
-    
+
     _divider
-    
+
     if [[ $total_estimate > 0 ]]; then
-        
-        # footer summary       
+
+        # footer summary
         printf "$format" "summary" "-" "-" "-" $total_estimate $total_standard_deviation $total_variance
         _divider
-        
+
         _echo ""
         _echoB "Three point estimates"
         _echo ""
-        
-        width=42 
+
+        width=42
         tpeformat=" | %-13s |%11s |%10s |\n"
-        
+
         _divider
         printf "$tpeformat" "confidence"
         _divider
@@ -132,26 +133,32 @@ function pert_table
         printf "$tpeformat" "2 Sigma - 95%" $(_calc "$total_estimate - 2 * $total_standard_deviation") $(_calc "$total_estimate + 2 * $total_standard_deviation")
         printf "$tpeformat" "3 Sigma - 99%" $(_calc "$total_estimate - 3 * $total_standard_deviation") $(_calc "$total_estimate + 3 * $total_standard_deviation")
         _divider
-    
+
     fi
-    
+
     _echo ""
 }
 
 
 # main
-if [ $# -eq 0 ]; then
-    _help
-    exit 1
-fi
+if [ ! -t 0 ];then
+    time=$(cat -)
+    pert_table ${time[@]}
+else
+    if [ $# -eq 0 ]; then
+        _help
+        exit 1
+    fi
 
-case "$1" in
-  *help|*h)
-    _help
-    exit 1
-    ;;
-  *)
-    pert_table $@
-    exit 0
-    ;;
-esac
+    case "$1" in
+      *help|*h)
+        _help
+        exit 1
+        ;;
+      *)
+
+        pert_table $@
+        exit 0
+        ;;
+    esac
+fi
