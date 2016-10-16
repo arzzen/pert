@@ -67,7 +67,8 @@ function pert_table
     total_estimate=0
     total_standard_deviation=0
     total_variance=0
-    for var in "$@"; do
+    time=("$@")
+    for var in "${time[@]}"; do
 
         # counter iterator
         counter=$[$counter +1]
@@ -146,18 +147,24 @@ function pert_table
 
 
 # main
-if [ $# -eq 0 ]; then
-    _help
-    exit 1
-fi
+if [ ! -t 0 ];then
+    time=$(cat -)
+    pert_table ${time[@]}
+else
+    if [ $# -eq 0 ]; then
+        _help
+        exit 1
+    fi
 
-case "$1" in
-  *help|*h)
-    _help
-    exit 1
-    ;;
-  *)
-    pert_table $@
-    exit 0
-    ;;
-esac
+    case "$1" in
+      *help|*h)
+        _help
+        exit 1
+        ;;
+      *)
+
+        pert_table $@
+        exit 0
+        ;;
+    esac
+fi
