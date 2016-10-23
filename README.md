@@ -28,6 +28,8 @@ Example:
 	pert 1,3,4
 	pert 10,15,20 5,7,10
 	pert "1,2,3" "15,17,20"
+	cat data.txt | pert
+	echo "1,2,3 9,10,14" | pert
 </pre>
 
 ### Demo
