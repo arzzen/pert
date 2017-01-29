@@ -2,6 +2,33 @@
 
 > A simple utility to estimate tasks using PERT (Program evaluation and review technique)
 
+### Demo
+
+![pert example](https://cloud.githubusercontent.com/assets/6382002/13582789/8205bac0-e4ae-11e5-9a03-894e32943f30.gif)
+
+
+### Usage
+
+Comma separated task list in the form `"1,2,12 4,5,9 2,3,6"`, where whitespace separates tasks.
+(or you can use piping inputs `echo "1,2,3 10,30,40" | pert`)
+
+Usage: 
+
+`pert [optimistic,realistic,pessimistic]`
+
+Example:
+
+`pert 1,3,4`
+
+`pert 10,15,20 5,7,10`
+
+`pert "1,2,3" "15,17,20"`
+
+`cat data.txt | pert`
+
+`echo "1,2,3 9,10,14" | pert`
+
+
 ### Install
 
 ```bash
@@ -14,27 +41,6 @@ For uninstalling, open up the cloned directory and run
 ```bash
 sudo make uninstall
 ```
-
-### Usage
-<pre>
-A command line PERT calculator for quick estimates.
-
-Comma separated task list in the form "1,2,12 4,5,9 2,3,6", where whitespace separates tasks.
-
-Usage:
-	pert [optimistic,realistic,pessimistic]
-
-Example:
-	pert 1,3,4
-	pert 10,15,20 5,7,10
-	pert "1,2,3" "15,17,20"
-	cat data.txt | pert
-	echo "1,2,3 9,10,14" | pert
-</pre>
-
-### Demo
-
-![pert example](https://cloud.githubusercontent.com/assets/6382002/13582789/8205bac0-e4ae-11e5-9a03-894e32943f30.gif)
 
 ### Example
 
